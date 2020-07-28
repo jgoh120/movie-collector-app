@@ -1,0 +1,51 @@
+<!-- <div class="example-container mat-elevation-z8"> -->
+ <div class="container"> 
+  <div class="card">
+    <h2>Edit Movie</h2>
+    <br>
+    <!-- <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button> -->
+
+    <div class="card-body">
+      <form [formGroup]="movieForm" (ngSubmit)="onFormSubmit()">
+        
+        <div class="form-group">
+          <label class="col-md-2">Title</label>
+          <input matInput placeholder="Title" formControlName="title">
+          <div>
+            <span *ngIf="!movieForm.get('title').valid && movieForm.get('title').touched">Please enter movie title</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="col-md-2">Genre</label>
+          <input matInput placeholder="Genre" formControlName="genre">
+          <div>
+            <span *ngIf="!movieForm.get('genre').valid && movieForm.get('genre').touched">Please enter movie genre</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="col-md-2">Rating</label>
+          <input matInput placeholder="Rating" formControlName="rating">
+          <div>
+            <span *ngIf="!movieForm.get('rating').valid && movieForm.get('rating').touched">Please enter movie rating</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="col-md-2">Poster Url</label>
+          <input placeholder="PosterUrl" formControlName="posterUrl" size="70">
+          <div>
+            <span *ngIf="!movieForm.get('posterUrl').valid && movieForm.get('posterUrl').touched">Please enter poster Url</span>
+          </div>
+        </div>
+       
+        <div class="button-row">
+          <button type="submit" [disabled]="!movieForm.valid" class="btn btn-success">save updated movie data</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

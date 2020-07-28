@@ -1,0 +1,22 @@
+
+<div class="d-flex flex-wrap p-4 justify-content-between">
+    <div class="card mb-4" style="width: 14rem" *ngFor="let movie of movies">
+        <img [src]="movie.posterUrl" class="card-img-top">
+        <div class="card-body">
+            <h5 class="card-title">{{movie.title}}</h5>
+            <p class="card-text">{{movie.genre}}</p>
+            <button *ngIf="isLogin && movie.creatorId == loginUserID" class="btn btn-primary mr-2" (click)="presentEditMovieModal(movie._id)">Edit this movie</button>
+            <button *ngIf="isLogin && movie.creatorId == loginUserID" class="btn btn-danger mr-2" (click)="deleteMovie(movie._id)">Delete movie</button>
+        </div>
+        <div class="card-footer">
+            <span class="badge badge-secondary">{{movie.rating}}</span>
+        </div>
+    </div>
+</div>
+<a *ngIf="isLogin" routerLink="/new-movie"><button class="btn btn-success" > Add new movie </button></a>
+
+<br>
+---------------------------------------------
+<br>
+
+<button *ngIf="isLogin" class="btn btn-info mr-2" (click)="presentNewMovieModal()">Launch modal to add movie</button>
