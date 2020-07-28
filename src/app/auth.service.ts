@@ -46,6 +46,10 @@ export class AuthService {
   public getCurrentUser(): User {
     return this.currentUserSubject.value;
   }
+
+  public getToken(): string {
+    return localStorage.getItem(this.LOCAL_STORAGE_KEY_TOKEN);
+  }
   
   public login(username: string, password: string): Observable<LoginResponse> {
     return this.http.post<LoginResponse>(`${environment.apiUrl}/login`, { username, password })

@@ -2,8 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
-
-import { AuthenticationService } from '../authetication.service';
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'abc-login',
@@ -18,7 +17,7 @@ export class LoginComponent implements OnInit {
   error = '';
 
   constructor(private formBuilder: FormBuilder, private route: ActivatedRoute,
-    private router: Router, private authenticationService: AuthenticationService) {
+    private router: Router, private authService: AuthService) {
     // redirect to home if already logged in
     // if (this.authenticationService.currentUserValue) {
     //   this.router.navigate(['/movies']);
@@ -48,23 +47,21 @@ export class LoginComponent implements OnInit {
     }
 
     this.loading = true;
-    this.authenticationService.login(this.f.username.value, this.f.password.value).pipe(first()).subscribe(
-        data => {
-          if(Object.keys(data).length === 0 && data.constructor === Object){
-            this.error = "User ID and Password is Invalid!";
-            this.loading = false;
-          } else {
-            //this.router.navigate([this.returnUrl]);
-            window.location.href = this.returnUrl;
-          }
-          
-          //this.router.navigate(['/movies']);
-        },
-        error => {
-          console.log(error)
-          this.error = error;
+    this.authService.login(this.f.username.value, this.f.password.value).pipe(first()).subscribe(
+      response => {
+        if (response.status !== 'ok') {
+          this.error = "User ID and Password is Invalid!";
           this.loading = false;
-        });
+          return;
+        }
+
+        window.location.href = this.returnUrl;
+      },
+      error => {
+        console.log(error)
+        this.error = error;
+        this.loading = false;
+      });
   }
 
 }
