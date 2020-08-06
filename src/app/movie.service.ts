@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
 @Injectable({ providedIn: 'root' })
@@ -11,32 +10,31 @@ export class MovieService {
     private http: HttpClient
   ) { }
 
-  getAll(): Observable<Movie[]> {
-    return this.http.get<Movie[]>(`${environment.apiUrl}/movies`);
+  public getAll(): Promise<Movie[]> {
+    return this.http.get<Movie[]>(`${environment.apiUrl}/movies`).toPromise();
   }
 
-  create(movie: NewMovie): Observable<string>{
-    return this.http.post(`${environment.apiUrl}/movies`, movie,  { responseType: 'text' }); 
+  public create(movie: NewMovie): Promise<string>{
+    return this.http.post(`${environment.apiUrl}/movies`, movie,  { responseType: 'text' }).toPromise(); 
   }
 
-  getById(id: string): Observable<Movie> {
-    return this.http.get<Movie>(`${environment.apiUrl}/${id}`);
+  public getById(id: string): Promise<Movie> {
+    return this.http.get<Movie>(`${environment.apiUrl}/movies/${id}`).toPromise();
   }
 
-  update(id: string, movie: NewMovie): Observable<string> {
-    return this.http.put(`${environment.apiUrl}/${id}`, movie, { responseType: 'text' });
+  public update(id: string, movie: NewMovie): Promise<string> {
+    return this.http.put(`${environment.apiUrl}/movies/${id}`, movie, { responseType: 'text' }).toPromise();
   }
 
-  delete(id: string): Observable<string> {
-    return this.http.delete(`${environment.apiUrl}/${id}`, { responseType: 'text' });
+  public delete(id: string): Promise<string> {
+    return this.http.delete(`${environment.apiUrl}/movies/${id}`, { responseType: 'text' }).toPromise();
   }
 
 }
 
-type NewMovie = {
+export type NewMovie = {
   title: string;
   genre: string[];
-  rating: number;
   posterUrl: string;
 };
 

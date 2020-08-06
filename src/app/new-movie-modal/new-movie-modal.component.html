@@ -1,13 +1,13 @@
 <div class="card">
     <div class="card-body">
-      <form [formGroup]="movieForm" (ngSubmit)="submitNewMovieModal()" novalidate>
+      <form [formGroup]="form" (ngSubmit)="createMovie()" novalidate>
         
         <div class="form-group">
           <label class="col-md-2">Title</label>
           <input type="text" formControlName = "title" >
         </div>
-        <div *ngIf="movieForm.controls['title'].invalid && (movieForm.controls['title'].dirty || movieForm.controls['title'].touched)" class="alert alert-danger">
-          <div *ngIf="movieForm.controls['title'].errors.required">
+        <div *ngIf="form.controls['title'].invalid && (form.controls['title'].dirty || form.controls['title'].touched)" class="alert alert-danger">
+          <div *ngIf="form.controls['title'].errors.required">
             Title is required.
           </div>
         </div>
@@ -16,19 +16,9 @@
           <label class="col-md-2">Genre </label>
           <input type="text" formControlName="genre" />
         </div>
-        <div *ngIf="movieForm.controls['genre'].invalid && (movieForm.controls['genre'].dirty || movieForm.controls['genre'].touched)" class="alert alert-danger">
-          <div *ngIf="movieForm.controls['genre'].errors.required">
+        <div *ngIf="form.controls['genre'].invalid && (form.controls['genre'].dirty || form.controls['genre'].touched)" class="alert alert-danger">
+          <div *ngIf="form.controls['genre'].errors.required">
             Genre is required.
-          </div>
-        </div>
-  
-        <div class="form-group">
-          <label class="col-md-2">Rating </label>
-          <input type="text" formControlName="rating" />
-        </div>
-        <div *ngIf="movieForm.controls['rating'].invalid && (movieForm.controls['rating'].dirty || movieForm.controls['rating'].touched)" class="alert alert-danger">
-          <div *ngIf="movieForm.controls['rating'].errors.required">
-            Rating is required.
           </div>
         </div>
   
@@ -36,19 +26,17 @@
           <label class="col-md-2">Poster URL </label>
           <input type="text" formControlName="posterUrl" size="70"/>
         </div>
-        <div *ngIf="movieForm.controls['posterUrl'].invalid && (movieForm.controls['posterUrl'].dirty || movieForm.controls['posterUrl'].touched)" class="alert alert-danger">
-          <div *ngIf="movieForm.controls['posterUrl'].errors.required">
+        <div *ngIf="form.controls['posterUrl'].invalid && (form.controls['posterUrl'].dirty || form.controls['posterUrl'].touched)" class="alert alert-danger">
+          <div *ngIf="form.controls['posterUrl'].errors.required">
             PosterUrl is required.
           </div>
         </div>
   
         <div class="form-group">
           <button type="submit" class="btn btn-primary"
-          [disabled] = "movieForm.pristine || movieForm.invalid">
-          Add Movie</button>
+          [disabled] = "form.pristine || form.invalid">
+          Create</button>
         </div>
       </form>
     </div>
   </div> 
-  <!-- [disabled]="!movieForm.pristine || !movieForm.invalid"  -->
-  <!-- <abc-new-movie [movieForm]=movieForm></abc-new-movie>  -->

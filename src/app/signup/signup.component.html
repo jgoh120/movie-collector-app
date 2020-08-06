@@ -1,82 +1,103 @@
-<!-- <div class="col-md-6 offset-md-3 mt-5"> -->
-    
-    <div class="card">
-        <h4 class="card-header">User Sign Up </h4>
-        <div class="card-body">
-            <form [formGroup]="signupForm" (ngSubmit)="onSubmitNewUser()" novalidate>
-                
-                <div class="form-group">
-                    <label for="username">Firstname</label>
-                    <input type="text" formControlName="firstname"  >
-                </div>
-                
-                <div *ngIf="signupForm.controls['firstname'].invalid && (signupForm.controls['firstname'].dirty || signupForm.controls['firstname'].touched)" class="alert alert-danger">
-                    <div *ngIf="signupForm.controls['firstname'].errors.required">First name is required</div>
-                </div>
-                
+<div class="card">
+  <h4 class="card-header">User Sign Up</h4>
+  <div class="card-body">
+    <form [formGroup]="form" (ngSubmit)="signUp()" novalidate>
+      <div class="form-group">
+        <label for="username">Firstname</label>
+        <input type="text" formControlName="firstname" />
+      </div>
 
-                <div class="form-group">
-                    <label for="lastname">Lastname</label>
-                    <input type="text" formControlName="lastname"  >
-                </div>
-                <div *ngIf="signupForm.controls['lastname'].invalid && (signupForm.controls['lastname'].dirty || signupForm.controls['lastname'].touched)" class="alert alert-danger">
-                    <div *ngIf="signupForm.controls['lastname'].errors.required">Last name is required</div>
-                </div>
-            
-
-                <div class="form-group">
-                    <label for="username">Username</label>
-                    <input type="text" formControlName="username"  >
-                </div>
-                <div *ngIf="signupForm.controls['username'].invalid && (signupForm.controls['username'].dirty || signupForm.controls['username'].touched)" class="alert alert-danger">
-                    <div *ngIf="signupForm.controls['username'].errors.required">User name is required.</div>
-                </div>
-           
-
-                <div class="form-group">
-                    <label for="password">Password</label>
-                    <input type="password" formControlName="password"  >
-                </div>   
-                <div *ngIf="signupForm.controls['password'].invalid && (signupForm.controls['password'].dirty || signupForm.controls['password'].touched)" class="alert alert-danger">
-                    <div *ngIf="signupForm.controls['password'].errors.required">Password is required.</div>
-                </div>
-               
-
-                <div class="form-group">
-                    <label for="organisation">Organisation</label>
-                    <input type="text" formControlName="organisation"  >
-                </div>    
-                <div *ngIf="signupForm.controls['organisation'].invalid && (signupForm.controls['organisation'].dirty || signupForm.controls['organisation'].touched)" class="alert alert-danger">
-                    <div *ngIf="signupForm.controls['organisation'].errors.required">Organisation is required.</div>
-                </div>
-               
-
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="text" formControlName="email" size="40" >
-                </div>
-                <div *ngIf="signupForm.controls['email'].invalid && (signupForm.controls['email'].dirty || signupForm.controls['email'].touched)" class="alert alert-danger">
-                    <div *ngIf="signupForm.controls['email'].errors.required">Email address is required.</div>
-                </div>
-              
-
-                <div class="form-group">
-                    <label for="contact">Contact</label>
-                    <input type="text" formControlName="contact"  >
-                </div>   
-                <div *ngIf="signupForm.controls['contact'].invalid && (signupForm.controls['contact'].dirty || signupForm.controls['contact'].touched)" class="alert alert-danger">
-                    <div *ngIf="signupForm.controls['contact'].errors.required">Contact number is required.</div>
-                </div>
-                
-
-                <div class="form-group">
-                    <button type="submit" class="btn btn-primary"
-                    [disabled] = "signupForm.pristine || signupForm.invalid">
-                    Add User</button>
-                </div>
-
-                
-            </form>
+      <div
+        *ngIf="
+          form.controls['firstname'].invalid &&
+          (form.controls['firstname'].dirty ||
+            form.controls['firstname'].touched)
+        "
+        class="alert alert-danger"
+      >
+        <div *ngIf="form.controls['firstname'].errors.required">
+          First name is required
         </div>
-    </div>
-<!-- </div> -->
+      </div>
+
+      <div class="form-group">
+        <label for="lastname">Lastname</label>
+        <input type="text" formControlName="lastname" />
+      </div>
+      <div
+        *ngIf="
+          form.controls['lastname'].invalid &&
+          (form.controls['lastname'].dirty || form.controls['lastname'].touched)
+        "
+        class="alert alert-danger"
+      >
+        <div *ngIf="form.controls['lastname'].errors.required">
+          Last name is required
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="username">Username</label>
+        <input type="text" formControlName="username" />
+      </div>
+      <div
+        *ngIf="
+          form.controls['username'].invalid &&
+          (form.controls['username'].dirty || form.controls['username'].touched)
+        "
+        class="alert alert-danger"
+      >
+        <div *ngIf="form.controls['username'].errors.required">
+          User name is required.
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" formControlName="password" />
+      </div>
+      <div
+        *ngIf="
+          form.controls['password'].invalid &&
+          (form.controls['password'].dirty || form.controls['password'].touched)
+        "
+        class="alert alert-danger"
+      >
+        <div *ngIf="form.controls['password'].errors.required">
+          Password is required.
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="text" formControlName="email" size="40" />
+      </div>
+      <div
+        *ngIf="
+          form.controls['email'].invalid &&
+          (form.controls['email'].dirty || form.controls['email'].touched)
+        "
+        class="alert alert-danger"
+      >
+        <div *ngIf="form.controls['email'].errors.required">
+          Email address is required.
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="contact">Contact</label>
+        <input type="text" formControlName="contact" />
+      </div>
+
+      <div class="form-group">
+        <button
+          type="submit"
+          class="btn btn-primary"
+          [disabled]="form.pristine || form.invalid"
+        >
+          Register
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
