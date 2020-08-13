@@ -1,8 +1,6 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Component, OnInit, Input } from '@angular/core';
 import { MovieService } from '../movie.service';
-import { FormGroup, FormBuilder, FormControl, Validators } from "@angular/forms";
-
+import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
@@ -14,61 +12,34 @@ export class EditMovieDetailComponent implements OnInit {
 
   @Input()
   movieId: string;
-  /*
-  movieForm: FormGroup;
-    id: '';
-    title: '';
-    posterUrl: string = '';
-    genre: string = '';
-    rating: number = null;  */
 
-    movieForm: FormGroup
+  form: FormGroup;
 
-  constructor(private router: Router, private route: ActivatedRoute, 
-              private movieService: MovieService, private formBuilder: FormBuilder,
-              private activeModal: NgbActiveModal) {
+  constructor(
+    private movieService: MovieService,
+    private formBuilder: FormBuilder,
+    private activeModal: NgbActiveModal
+  ) {
 
-                this.movieForm = this.formBuilder.group({
-                  title: [''],
-                  posterUrl: [''],
-                  genre: [''],
-                  rating:['']
-                  })
-              }
+    this.form = this.formBuilder.group({
+      title: ['', [Validators.required]],
+      posterUrl: ['', [Validators.required]],
+      genre: ['', [Validators.required]]
+    });
+  }
 
   ngOnInit(): void {
-    console.log(this.movieId);
-    this.getMovieById(this.movieId);
-    this.movieForm = this.formBuilder.group({
-      id: [null, Validators.required],
-      title: [null, Validators.required],
-      posterUrl: [null, Validators.required],
-      genre: [null, Validators.required],
-      rating:[null, Validators.required]
-    });
+    this.populateFormWithMovieData(this.movieId);
   }
 
-  getMovieById(id: any){
-    this.movieService.getMovieById(id).subscribe((data: any)=>{
-      this.movieForm.setValue({
-        id: data._id,
-        title: data.title,
-        genre: data.genre,
-        rating: data.rating,
-        posterUrl: data.posterUrl
-      });
-    });
+  async populateFormWithMovieData(id: string) {
+    const movie = await this.movieService.getById(id);
+    this.form.patchValue(movie);
   }
 
-  onFormSubmit(){
-    this.movieService.updateMovie(this.movieId, this.movieForm.value)
-    .subscribe((res: any) => {
-      this.activeModal.close();
-      location.reload()
-      /*this.movieService.getMovies().subscribe(movies =>{
-        this.movieService.movieList = movies;
-      });*/
-    });
+  async updateMovie() {
+    await this.movieService.update(this.movieId, this.form.value);
+    this.activeModal.close();
+    window.location.reload();
   }
-
 }

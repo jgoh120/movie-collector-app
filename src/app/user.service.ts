@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
 import { environment } from '../environments/environment';
 
 @Injectable({ providedIn: 'root' })
@@ -10,16 +9,16 @@ export class UserService {
     private http: HttpClient
   ) { }
   
-  register(user: UserRegistration): Observable<string> {
+  public register(user: UserRegistration): Promise<string> {
     return this.http.post(`${environment.apiUrl}/users/register`, user,  {
       responseType: 'text'
-    }); 
+    }).toPromise(); 
   }
 
-  update(user: UserRegistration): Observable<string> {
+  public update(user: UserRegistration): Promise<string> {
     return this.http.put(`${environment.apiUrl}/users`, user,  {
       responseType: 'text'
-    }); 
+    }).toPromise();
   }
   
 }
@@ -27,6 +26,7 @@ export class UserService {
 export type UserRegistration = {
   username: string;
   firstname: string;
+  password: string;
   lastname: string;
   email: string;
   contact: string;

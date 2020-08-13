@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'abc-navigation',
@@ -16,6 +16,10 @@ export class NavigationComponent implements OnInit {
       this.isLogin = false;
     } 
     console.log('navigation created');
+  }
+
+  signOut() {
+    
   }
 
 }
