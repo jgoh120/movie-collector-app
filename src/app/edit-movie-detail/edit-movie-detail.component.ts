@@ -29,10 +29,10 @@ export class EditMovieDetailComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.populatFormWithMovieData(this.movieId);
+    this.populateFormWithMovieData(this.movieId);
   }
 
-  async populatFormWithMovieData(id: string) {
+  async populateFormWithMovieData(id: string) {
     const movie = await this.movieService.getById(id);
     this.form.patchValue(movie);
   }
