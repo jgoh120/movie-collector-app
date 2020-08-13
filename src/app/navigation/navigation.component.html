@@ -14,35 +14,22 @@
       <a class="nav-link" routerLink="/reviews">Reviews</a>
     </li>
 
-    <li *ngIf="isLogin" class="nav-item" routerLinkActive="active">
-      <a class="nav-link" routerLink="/new-movie">Add new movie</a>
-    </li>
-
-    <li *ngIf="isLogin" class="nav-item" routerLinkActive="active">
-      <a class="nav-link" routerLink="/movies-list">See movies listing</a>
-    </li>
   </ul>
-  <ul class="nav-bar">
-    <ng-container *ngIf="false; else loggedIn">
-      <li class="nav-item" routerLinkActive="active">
-        <a style="margin-left: 300px;" class="nav-link" routerLink="/login"
-          >Sign in</a
-        >
-      </li>
 
-      <li *ngIf="isLogin == false" class="nav-item" routerLinkActive="active">
-        <a style="margin-left: 20px;" class="nav-link" routerLink="/signup"
-          >Sign up</a
-        >
+  <ul class="navbar-nav">
+    <ng-container *ngIf="isLoggedIn$ | async; else loggedOut">
+      <li class="nav-item" routerLinkActive="active">
+        <a class="nav-link" (click)="signOut()">Sign out</a>
       </li>
     </ng-container>
   </ul>
 </nav>
 
-<ng-template #loggedIn>
+<ng-template #loggedOut>
   <li class="nav-item" routerLinkActive="active">
-    <a style="margin-left: 120px;" class="nav-link" (click)="signOut()"
-      >Sign out</a
-    >
+    <a class="nav-link" routerLink="/login">Sign in</a>
+  </li>
+  <li class="nav-item" routerLinkActive="active">
+    <a class="nav-link" routerLink="/signup">Sign up</a>
   </li>
 </ng-template>
