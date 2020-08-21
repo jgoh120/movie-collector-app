@@ -1,0 +1,21 @@
+<div class="modal-header">
+  <h4 class="modal-title" id="modal-basic-title">Add Review</h4>
+  <button class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div> 
+<div class="modal-body">
+  <form [formGroup]="form" (ngSubmit)="createReview()" novalidate>
+    <div class="form-group">
+      <textarea class="w-100" formControlName="description"></textarea>
+    </div>
+    <div class="form-group">
+      <ngb-rating formControlName="rating" [max]="5"></ngb-rating>
+    </div>
+    <div class="form-group text-right">
+      <button type="submit" class="btn btn-primary" [disabled] = "form.pristine || form.invalid">
+        Create
+      </button>
+    </div>
+  </form>
+</div>

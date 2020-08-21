@@ -7,12 +7,22 @@ import { EditMovieDetailComponent } from './edit-movie-detail/edit-movie-detail.
 import { LoginComponent } from './login/login.component';
 import { AuthGuard } from './auth.guard';
 import { SignupComponent } from './signup/signup.component';
+import { MovieComponent } from './movies/movie/movie.component';
 
 const routes: Routes = [
   {
     path: 'movies',
-    component: MoviesComponent,
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard],
+    children: [
+      {
+        path: '',
+        component: MoviesComponent
+      },
+      {
+        path: ':id',
+        component: MovieComponent
+      }
+    ]
   },
   {
     path: 'reviews',
