@@ -1,1 +1,24 @@
-<p>reviews works!</p>
+<!-- <div class="d-flex flex-wrap p-4 justify-content-between">
+    <div class="card mb-4" style="width: 14rem;" *ngFor="let review of reviews">
+        <img [src]="movie.posterUrl" class="card-img-top" />
+        <div class="card-body">
+            <h5 class="card-title">{{ movie.title }}</h5>
+            <h5 class="badge badge-secondary">{{ movie.rating }}</h5>
+
+            <p class="card-text">{{ movie.review }}</p>
+
+            <ng-container *ngIf="user$ | async as user">
+                <button *ngIf="movie.contributorId == user.id" class="btn btn-primary mr-2"
+                    (click)="presentEditReviewModal(review.id)">
+                    Edit this movie review
+                </button>
+                <button *ngIf="movie.contributorId == user.id" class="btn btn-danger mr-2"
+                    (click)="deleteReview(review.id)">
+                    Delete movie review
+                </button>
+            </ng-container>
+        </div>
+
+    </div>
+</div>
+<br /> -->
