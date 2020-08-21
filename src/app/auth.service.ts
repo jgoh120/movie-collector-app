@@ -4,6 +4,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { environment } from '../environments/environment';
 import { User } from './user.service';
+import { Router } from '@angular/router';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -15,7 +16,8 @@ export class AuthService {
   public currentUser$: Observable<User>;
   
   constructor(
-    private http: HttpClient
+    private http: HttpClient,
+    private router: Router
   ) {
     const currentUser = this.loadSessionFromStorage().user;
     this.currentUserSubject = new BehaviorSubject(currentUser);
@@ -63,7 +65,8 @@ export class AuthService {
   
   public logout() {
     this.clearSessionFromStorage();
-    this.currentUserSubject.next(undefined);
+    this.currentUserSubject.next(null);
+    this.router.navigate(['login'])
   }
 }
 

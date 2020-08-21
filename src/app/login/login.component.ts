@@ -18,10 +18,6 @@ export class LoginComponent implements OnInit {
 
   constructor(private formBuilder: FormBuilder, private route: ActivatedRoute,
     private router: Router, private authService: AuthService) {
-    // redirect to home if already logged in
-    // if (this.authenticationService.currentUserValue) {
-    //   this.router.navigate(['/movies']);
-    // }
   }
 
   ngOnInit() {

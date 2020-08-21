@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
+import { AuthService } from '../auth.service';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'abc-navigation',
@@ -7,19 +10,21 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NavigationComponent implements OnInit {
 
-  constructor() { }
+  isLoggedIn$: Observable<boolean>;
 
-  isLogin : boolean = true;
+  constructor(private authService: AuthService) {
+    this.isLoggedIn$ = this.authService.currentUser$.pipe(map(user => user !== null))
+   }
+
+  
 
   ngOnInit() {
-    if(localStorage.getItem('currentUser') == null){
-      this.isLogin = false;
-    } 
-    console.log('navigation created');
+    
+   
   }
 
   signOut() {
-    
+    this.authService.logout();
   }
 
 }
