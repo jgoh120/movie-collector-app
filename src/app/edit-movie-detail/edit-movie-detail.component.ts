@@ -40,7 +40,6 @@ export class EditMovieDetailComponent implements OnInit {
   async updateMovie() {
     await this.movieService.update(this.movieId, this.form.value);
     this.modal.close();
-    window.location.reload();
   }
 
   close(){

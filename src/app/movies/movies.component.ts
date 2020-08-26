@@ -15,7 +15,7 @@ import { User } from '../user.service';
 })
 export class MoviesComponent implements OnInit {
 
-  movies: Movie[] = [];
+  movies$: Observable<Movie[]>;
 
   user$: Observable<User>;
 
@@ -25,15 +25,10 @@ export class MoviesComponent implements OnInit {
     private authService: AuthService
   ) {
     this.user$ = this.authService.currentUser$;
+    this.movies$ = this.movieService.getAll();
   }
 
-  ngOnInit() {
-    this.fetchMovies();
-  }
-
-  async fetchMovies() {
-    this.movies = await this.movieService.getAll();
-  }
+  ngOnInit() { }
 
   presentCreateMovieModal() {
     const modal = this.modalService.open(NewMovieModalComponent, {
@@ -51,7 +46,6 @@ export class MoviesComponent implements OnInit {
   async deleteMovie(id) {
     if (confirm("Are you sure you want to delete?")) {
       await this.movieService.delete(id);
-      window.location.reload();
     }
   }
 

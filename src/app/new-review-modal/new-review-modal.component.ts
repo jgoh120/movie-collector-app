@@ -38,7 +38,6 @@ export class NewReviewModalComponent implements OnInit {
 
     this.reviewService.create(this.movieId, { description, rating });
     this.modal.close();
-    window.location.reload();
   }
 
   close(){

@@ -34,9 +34,6 @@ export class NewMovieModalComponent implements OnInit {
     await this.movieService.create(movie);
 
     this.modal.close();
-
-    // go back to movie page
-    window.location.reload();
   }
 
   close(){
