@@ -1,43 +1,41 @@
-<!-- <div class="example-container mat-elevation-z8"> -->
- <div class="container"> 
-  <div class="card">
-    <h2>Edit Movie</h2>
-    <br>
-    <!-- <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('cross click')">
-      <span aria-hidden="true">&times;</span>
-    </button> -->
-
-    <div class="card-body">
-      <form [formGroup]="form" (ngSubmit)="updateMovie()">
-        
-        <div class="form-group">
-          <label class="col-md-2">Title</label>
-          <input matInput placeholder="Title" formControlName="title">
-          <div>
-            <span *ngIf="!form.get('title').valid && form.get('title').touched">Please enter movie title</span>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label class="col-md-2">Genre</label>
-          <input matInput placeholder="Genre" formControlName="genre">
-          <div>
-            <span *ngIf="!form.get('genre').valid && form.get('genre').touched">Please enter movie genre</span>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label class="col-md-2">Poster Url</label>
-          <input placeholder="PosterUrl" formControlName="posterUrl" size="70">
-          <div>
-            <span *ngIf="!form.get('posterUrl').valid && form.get('posterUrl').touched">Please enter poster Url</span>
-          </div>
-        </div>
-       
-        <div class="button-row">
-          <button type="submit" [disabled]="!form.valid" class="btn btn-success">Update</button>
-        </div>
-      </form>
+<div class="modal-header">
+  <h4 class="modal-title" id="modal-basic-title">Edit Movie</h4>
+  <button class="close" aria-label="Close" (click)="close()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div> 
+<div class="modal-body">
+  <form [formGroup]="form" (ngSubmit)="updateMovie()" novalidate>
+    
+    <div class="form-group">
+      <label class="col-md-2">Title</label>
+      <input matInput placeholder="Title" formControlName="title">
+      <div>
+        <span *ngIf="!form.get('title').valid && form.get('title').touched">Please enter movie title</span>
+      </div>
     </div>
-  </div>
+
+    <div class="form-group">
+      <label class="col-md-2">Genre</label>
+      <input matInput placeholder="Genre" formControlName="genre">
+      <div>
+        <span *ngIf="!form.get('genre').valid && form.get('genre').touched">Please enter movie genre</span>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="col-md-2">Poster Url</label>
+      <input placeholder="PosterUrl" formControlName="posterUrl" size="70">
+      <div>
+        <span *ngIf="!form.get('posterUrl').valid && form.get('posterUrl').touched">Please enter poster Url</span>
+      </div>
+    </div>
+
+
+    <div class="form-group text-right">
+      <button type="submit" class="btn btn-primary" [disabled] = "form.pristine || form.invalid">
+        Update
+      </button>
+    </div>
+  </form>
 </div>

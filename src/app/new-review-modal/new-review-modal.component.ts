@@ -3,6 +3,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ReviewService } from '../review.service';
 
+//import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+
 @Component({
   selector: 'abc-new-review-modal',
   templateUrl: './new-review-modal.component.html',
@@ -37,6 +39,10 @@ export class NewReviewModalComponent implements OnInit {
     this.reviewService.create(this.movieId, { description, rating });
     this.modal.close();
     window.location.reload();
+  }
+
+  close(){
+    this.modal.close();
   }
 
 }

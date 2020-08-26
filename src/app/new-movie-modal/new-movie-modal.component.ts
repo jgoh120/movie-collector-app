@@ -13,7 +13,7 @@ export class NewMovieModalComponent implements OnInit {
   form: FormGroup
 
   constructor(
-    public activeModal: NgbActiveModal,
+    private modal: NgbActiveModal,
     private movieService: MovieService,
     private formBuilder: FormBuilder
   ) {
@@ -33,9 +33,14 @@ export class NewMovieModalComponent implements OnInit {
     const movie = this.form.value as NewMovie;
     await this.movieService.create(movie);
 
-    this.activeModal.close();
+    this.modal.close();
 
     // go back to movie page
     window.location.reload();
   }
+
+  close(){
+    this.modal.close();
+  }
+
 }
