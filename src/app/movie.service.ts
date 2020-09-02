@@ -1,33 +1,44 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
+import { Observable, BehaviorSubject } from 'rxjs';
+import { mergeMap } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 
 export class MovieService {
+
+  private moviesChange: BehaviorSubject<void>;
   
   constructor(
     private http: HttpClient
-  ) { }
-
-  public getAll(): Promise<Movie[]> {
-    return this.http.get<Movie[]>(`${environment.apiUrl}/movies`).toPromise();
+  ) {
+    this.moviesChange = new BehaviorSubject(null);
   }
 
-  public create(movie: NewMovie): Promise<string>{
-    return this.http.post(`${environment.apiUrl}/movies`, movie,  { responseType: 'text' }).toPromise(); 
+  public getAll(): Observable<Movie[]> {
+    return this.moviesChange.asObservable().pipe(
+      mergeMap(() => this.http.get<Movie[]>(`${environment.apiUrl}/movies`))
+    );
+  }
+
+  public async create(movie: NewMovie): Promise<void> {
+    await this.http.post(`${environment.apiUrl}/movies`, movie,  { responseType: 'text' }).toPromise(); 
+    this.moviesChange.next();
   }
 
   public getById(id: string): Promise<Movie> {
     return this.http.get<Movie>(`${environment.apiUrl}/movies/${id}`).toPromise();
   }
 
-  public update(id: string, movie: NewMovie): Promise<string> {
-    return this.http.put(`${environment.apiUrl}/movies/${id}`, movie, { responseType: 'text' }).toPromise();
+  public async update(id: string, movie: NewMovie): Promise<void> {
+    await this.http.put(`${environment.apiUrl}/movies/${id}`, movie, { responseType: 'text' }).toPromise();
+    this.moviesChange.next();
   }
 
-  public delete(id: string): Promise<string> {
-    return this.http.delete(`${environment.apiUrl}/movies/${id}`, { responseType: 'text' }).toPromise();
+  public async delete(id: string): Promise<void> {
+    await this.http.delete(`${environment.apiUrl}/movies/${id}`, { responseType: 'text' }).toPromise();
+    this.moviesChange.next();
   }
 
 }

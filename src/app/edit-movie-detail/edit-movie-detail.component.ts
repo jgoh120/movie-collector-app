@@ -18,7 +18,7 @@ export class EditMovieDetailComponent implements OnInit {
   constructor(
     private movieService: MovieService,
     private formBuilder: FormBuilder,
-    private activeModal: NgbActiveModal
+    private modal: NgbActiveModal
   ) {
 
     this.form = this.formBuilder.group({
@@ -39,7 +39,10 @@ export class EditMovieDetailComponent implements OnInit {
 
   async updateMovie() {
     await this.movieService.update(this.movieId, this.form.value);
-    this.activeModal.close();
-    window.location.reload();
+    this.modal.close();
+  }
+
+  close(){
+    this.modal.close();
   }
 }

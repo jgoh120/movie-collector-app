@@ -1,0 +1,19 @@
+<div class="container-fluid d-flex mt-5">
+  <div class="w-25">
+    <ng-container *ngIf="movie">
+      <img class="w-100" [src]="movie.posterUrl">
+      <h1>{{ movie.title }}</h1>
+    </ng-container>
+  </div>
+  <div class="flex-grow-1 ml-4">
+    <div class="d-flex justify-content-between align-items-center">
+      <h1>Reviews</h1>
+      <button class="btn btn-outline-primary btn-sm" (click)="presentCreateReviewModal()">
+        Add Review
+      </button>
+    </div>
+    <div class="card" *ngFor="let review of reviews$ | async">
+      {{ review.description }}
+    </div>
+  </div>
+</div>

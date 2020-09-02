@@ -1,8 +1,8 @@
-<div class="d-flex flex-wrap p-4 justify-content-between">
-  <div class="card mb-4" style="width: 14rem;" *ngFor="let movie of movies">
+<div class="d-flex flex-wrap p-4">
+  <div class="card mb-4 mx-2" style="width: 14rem;" *ngFor="let movie of movies$ | async">
     <img [src]="movie.posterUrl" class="card-img-top" />
     <div class="card-body">
-      <h5 class="card-title">{{ movie.title }}</h5>
+      <h5 class="card-title" [routerLink]="[movie.id]">{{ movie.title }}</h5>
       <p class="card-text">{{ movie.genre }}</p>
       <ng-container *ngIf="user$ | async as user">
         <button *ngIf="movie.contributorId == user.id" class="btn btn-primary mr-2" (click)="presentEditMovieModal(movie.id)">
