@@ -7,7 +7,10 @@
 <div class="modal-body">
   <form [formGroup]="form" (ngSubmit)="createReview()" novalidate>
     <div class="form-group">
-      <textarea class="w-100" formControlName="description"></textarea>
+      <input class="w-100" formControlName="header" placeholder="Review Header">
+    </div>
+    <div class="form-group">
+      <textarea class="w-100" formControlName="description" placeholder="Review Description"></textarea>
     </div>
     <div class="form-group">
       <ngb-rating formControlName="rating" [max]="5"></ngb-rating>

@@ -29,6 +29,7 @@ export class ReviewService {
 }
 
 export type NewReview = {
+  header: string;
   description: string;
   rating: number;
 };

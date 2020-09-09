@@ -23,6 +23,7 @@ export class NewReviewModalComponent implements OnInit {
     private reviewService: ReviewService
   ) {
     this.form = this.formBuilder.group({
+      header: ['', [Validators.required]],
       description: ['', [Validators.required]],
       rating: [3]
     });
@@ -33,10 +34,11 @@ export class NewReviewModalComponent implements OnInit {
 
   createReview() {
 
+    const header = this.form.get('header').value;
     const description = this.form.get('description').value;
     const rating = this.form.get('rating').value;
 
-    this.reviewService.create(this.movieId, { description, rating });
+    this.reviewService.create(this.movieId, { header, description, rating });
     this.modal.close();
   }
 
