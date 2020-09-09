@@ -19,7 +19,7 @@
         <h6 class="card-subtitle mb-2 text-muted">by {{ review.author?.name || 'anonymous' }}</h6>
         <p class="card-text">{{ review.description }}</p>
         <div class="float-right" *ngIf="observables.currentUserId == review.author?.id">
-          <button class="btn btn-outline-primary btn-sm mr-4">
+          <button class="btn btn-outline-primary btn-sm mr-4" (click)="presentEditReviewModal(review.id)">
             Edit
           </button>
           <button class="btn btn-outline-danger btn-sm">

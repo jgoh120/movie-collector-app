@@ -7,6 +7,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NewReviewModalComponent } from 'src/app/new-review-modal/new-review-modal.component';
 import { AuthService } from 'src/app/auth.service';
 import { map } from 'rxjs/operators';
+import { EditReviewModalComponent } from 'src/app/edit-review-modal/edit-review-modal.component';
 
 @Component({
   selector: 'abc-movie',
@@ -46,6 +47,14 @@ export class MovieComponent implements OnInit {
     const modal = this.modalService.open(NewReviewModalComponent, {
       size: 'lg'
     });
+    modal.componentInstance.movieId = this.movie.id;
+  }
+
+  presentEditReviewModal(id: String){
+    const modal = this.modalService.open(EditReviewModalComponent,{
+      size: 'lg'
+    });
+    modal.componentInstance.reviewId = id;
     modal.componentInstance.movieId = this.movie.id;
   }
 

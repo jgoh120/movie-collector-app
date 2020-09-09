@@ -26,6 +26,22 @@ export class ReviewService {
       mergeMap(() => this.http.get<Review[]>(`${environment.apiUrl}/movies/${movieId}/reviews`))
     );    
   }
+
+  public getById(movieId: String, id: string): Promise<Review> {
+    return this.http.get<Review>(`${environment.apiUrl}/movies/${movieId}/reviews/${id}`).toPromise();
+  }
+
+  public async update(movieId: String, id: string, review: NewReview): Promise<void> {
+    await this.http.put(`${environment.apiUrl}/movies/${movieId}/reviews/${id}`, review, { responseType: 'text' }).toPromise();
+    this.reviewChange.next();
+  }
+
+  public async delete(movieId: String, id: string): Promise<void> {
+    await this.http.delete(`${environment.apiUrl}/movies/${movieId}/reviews/${id}`, { responseType: 'text' }).toPromise();
+    this.reviewChange.next();
+  }
+
+
 }
 
 export type NewReview = {
