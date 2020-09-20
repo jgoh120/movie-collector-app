@@ -1,0 +1,17 @@
+<div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">{{config.title}}</h4>
+    <button class="close" aria-label="Close" (click)="close()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div> 
+<div class="modal-body">
+    <p>{{config.description}}</p>
+    <div class="text-right">
+        <button class="btn btn-primary mr-2" (click) ="cancel()">
+          {{config.cancel.label || "Cancel"}}
+        </button>
+        <button class="btn btn-primary btn-danger" (click) ="confirm()">
+          {{config.confirm.label || "Confirm"}}
+        </button>
+      </div>
+</div>

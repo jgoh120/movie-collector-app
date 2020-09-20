@@ -17,6 +17,7 @@ import { AuthInterceptor } from './auth.interceptor';
 import { MovieComponent } from './movies/movie/movie.component';
 import { NewReviewModalComponent } from './new-review-modal/new-review-modal.component';
 import { EditReviewModalComponent } from './edit-review-modal/edit-review-modal.component';
+import { ConfirmPromptModalComponent } from './confirm-prompt-modal/confirm-prompt-modal.component';
 
 export const httpInterceptorProviders = [
   { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
@@ -35,7 +36,8 @@ export const httpInterceptorProviders = [
     SignupComponent,
     MovieComponent,
     NewReviewModalComponent,
-    EditReviewModalComponent
+    EditReviewModalComponent,
+    ConfirmPromptModalComponent
   ],
   imports: [
     BrowserModule,

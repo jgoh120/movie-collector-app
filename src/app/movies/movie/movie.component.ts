@@ -3,11 +3,13 @@ import { Movie, MovieService } from 'src/app/movie.service';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Review, ReviewService } from 'src/app/review.service';
+import { CommonService } from 'src/app/common.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NewReviewModalComponent } from 'src/app/new-review-modal/new-review-modal.component';
 import { AuthService } from 'src/app/auth.service';
 import { map } from 'rxjs/operators';
 import { EditReviewModalComponent } from 'src/app/edit-review-modal/edit-review-modal.component';
+
 
 @Component({
   selector: 'abc-movie',
@@ -27,6 +29,7 @@ export class MovieComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private reviewService: ReviewService,
     private modalService: NgbModal,
+    private commonService: CommonService,
     private authService: AuthService
   ) {
 
@@ -59,9 +62,21 @@ export class MovieComponent implements OnInit {
   }
 
   async deleteReview(id) {
-    if (confirm("Are you sure you want to delete this review?")) {
-      await this.reviewService.delete(this.movie.id,id);
-    }
+    this.commonService.presentConfirmModal({
+      title: "Delete review?",
+      description: "Are you sure you want to delete this? ",
+      confirm: {
+        label: "Confirm", 
+        handler: ()=> this.reviewService.delete(this.movie.id, id)
+      },
+      cancel: {
+        label: "Cancel",
+        handler: ()=> {}
+       }
+    })
+    // if (confirm("Are you sure you want to delete this review?")) {
+    //   await this.reviewService.delete(this.movie.id,id);
+    // }
   }
 
 }
