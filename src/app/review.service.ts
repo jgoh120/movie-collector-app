@@ -27,21 +27,19 @@ export class ReviewService {
     );    
   }
 
-  public getById(movieId: String, id: string): Promise<Review> {
+  public getById(movieId: string, id: string): Promise<Review> {
     return this.http.get<Review>(`${environment.apiUrl}/movies/${movieId}/reviews/${id}`).toPromise();
   }
 
-  public async update(movieId: String, id: string, review: NewReview): Promise<void> {
+  public async update(movieId: string, id: string, review: NewReview): Promise<void> {
     await this.http.put(`${environment.apiUrl}/movies/${movieId}/reviews/${id}`, review, { responseType: 'text' }).toPromise();
     this.reviewChange.next();
   }
 
-  public async delete(movieId: String, id: string): Promise<void> {
+  public async delete(movieId: string, id: string): Promise<void> {
     await this.http.delete(`${environment.apiUrl}/movies/${movieId}/reviews/${id}`, { responseType: 'text' }).toPromise();
     this.reviewChange.next();
   }
-
-
 }
 
 export type NewReview = {
@@ -52,6 +50,7 @@ export type NewReview = {
 
 export type Review = {
   id: string;
+  header:string;
   description: string;
   rating: number;
   authorId: string;

@@ -58,4 +58,10 @@ export class MovieComponent implements OnInit {
     modal.componentInstance.movieId = this.movie.id;
   }
 
+  async deleteReview(id) {
+    if (confirm("Are you sure you want to delete this review?")) {
+      await this.reviewService.delete(this.movie.id,id);
+    }
+  }
+
 }
