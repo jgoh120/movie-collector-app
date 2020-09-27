@@ -3,19 +3,21 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ReviewService } from '../review.service';
 
-//import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-
 @Component({
-  selector: 'abc-new-review-modal',
-  templateUrl: './new-review-modal.component.html',
-  styleUrls: ['./new-review-modal.component.scss']
+  selector: 'abc-edit-review-modal',
+  templateUrl: './edit-review-modal.component.html',
+  styleUrls: ['./edit-review-modal.component.scss']
 })
-export class NewReviewModalComponent implements OnInit {
+export class EditReviewModalComponent implements OnInit {
 
+  @Input()
+  reviewId: string;
+  
   @Input()
   movieId: string;
 
   form: FormGroup;
+
 
   constructor(
     private formBuilder: FormBuilder,
@@ -29,16 +31,18 @@ export class NewReviewModalComponent implements OnInit {
     });
   }
 
+  
   ngOnInit(): void {
+    this.populateFormWithReviewData(this.movieId, this.reviewId);
   }
 
-  createReview() {
+  async populateFormWithReviewData(movieId: string, id: string) {
+    const review = await this.reviewService.getById(movieId, id);
+    this.form.patchValue(review);
+  }
 
-    const header = this.form.get('header').value;
-    const description = this.form.get('description').value;
-    const rating = this.form.get('rating').value;
-
-    this.reviewService.create(this.movieId, { header, description, rating });
+  async updateReview() {
+    await this.reviewService.update(this.movieId, this.reviewId,this.form.value);
     this.modal.close();
   }
 

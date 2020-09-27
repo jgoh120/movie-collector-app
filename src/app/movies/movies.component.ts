@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MovieService, Movie } from '../movie.service';
+import { CommonService } from 'src/app/common.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NewMovieModalComponent } from '../new-movie-modal/new-movie-modal.component';
 import { EditMovieDetailComponent } from '../edit-movie-detail/edit-movie-detail.component';
@@ -22,7 +23,8 @@ export class MoviesComponent implements OnInit {
   constructor(
     private movieService: MovieService,
     private modalService: NgbModal,
-    private authService: AuthService
+    private authService: AuthService,
+    private commonService: CommonService
   ) {
     this.user$ = this.authService.currentUser$;
     this.movies$ = this.movieService.getAll();
@@ -44,9 +46,22 @@ export class MoviesComponent implements OnInit {
   }
 
   async deleteMovie(id) {
-    if (confirm("Are you sure you want to delete?")) {
-      await this.movieService.delete(id);
-    }
+    this.commonService.presentConfirmModal({
+      title: "Delete review?",
+      description: "Are you sure you want to delete this? ",
+      confirm: {
+        label: "Confirm", 
+        handler: ()=> this.movieService.delete(id)
+      },
+      cancel: {
+        label: "Cancel",
+        handler: ()=> {}
+       }
+    })
+    // if (confirm("Are you sure you want to delete?")) {
+    //   await this.movieService.delete(id);
+    // }
   }
 
+  
 }

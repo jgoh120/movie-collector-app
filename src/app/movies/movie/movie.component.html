@@ -1,4 +1,4 @@
-<div class="container-fluid d-flex mt-5">
+<div class="container-fluid d-flex mt-5" *ngIf="{ currentUserId: currentUserId$ | async } as observables">
   <div class="w-25">
     <ng-container *ngIf="movie">
       <img class="w-100" [src]="movie.posterUrl">
@@ -12,8 +12,21 @@
         Add Review
       </button>
     </div>
-    <div class="card" *ngFor="let review of reviews$ | async">
-      {{ review.description }}
+    <div class="card mb-3" *ngFor="let review of reviews$ | async">
+      <div class="card-body">
+        <ngb-rating class="review-rating float-right" [rate]="review.rating" max="5" [readonly]="true"></ngb-rating>
+        <h5 class="card-title">{{ review.header || '[No Header]' }} </h5>
+        <h6 class="card-subtitle mb-2 text-muted">by {{ review.author?.name || 'anonymous' }}</h6>
+        <p class="card-text">{{ review.description }}</p>
+        <div class="float-right" *ngIf="observables.currentUserId == review.author?.id">
+          <button class="btn btn-outline-primary btn-sm mr-4" (click)="presentEditReviewModal(review.id)">
+            Edit
+          </button>
+          <button class="btn btn-outline-danger btn-sm" (click)="deleteReview(review.id)">
+            Delete
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 </div>
