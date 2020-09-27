@@ -3,6 +3,22 @@
     <ng-container *ngIf="movie">
       <img class="w-100" [src]="movie.posterUrl">
       <h1>{{ movie.title }}</h1>
+      <table class="table table-sm" *ngIf="statistics$ | async as statistics">
+        <tbody>
+          <tr>
+            <th scope="row">Total Ratings</th>
+            <td>{{ statistics.rating.count | number }}</td>
+          </tr>
+          <tr>
+            <th scope="row">Average Ratings</th>
+            <td>{{ statistics.rating.average | number }}</td>
+          </tr>
+          <tr>
+            <th scope="row">Distribution</th>
+            <td>{{ statistics.rating.distribution }}</td>
+          </tr>
+        </tbody>
+      </table>
     </ng-container>
   </div>
   <div class="flex-grow-1 ml-4">
