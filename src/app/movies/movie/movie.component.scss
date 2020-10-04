@@ -1,3 +1,18 @@
 .review-rating {
   color: #ffbb00;
 }
+
+.stars-distribution {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+
+  .stars-label {
+    width: 50px;
+  }
+
+  .star-count-ratio {
+    width: 50px;
+    text-align: right;
+  }
+}
