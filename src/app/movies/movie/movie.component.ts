@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Movie, MovieService } from 'src/app/movie.service';
+import { Movie, MovieService, MovieStatistics } from 'src/app/movie.service';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Review, ReviewService } from 'src/app/review.service';
@@ -7,7 +7,7 @@ import { CommonService } from 'src/app/common.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NewReviewModalComponent } from 'src/app/new-review-modal/new-review-modal.component';
 import { AuthService } from 'src/app/auth.service';
-import { map } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs/operators';
 import { EditReviewModalComponent } from 'src/app/edit-review-modal/edit-review-modal.component';
 
 
@@ -23,6 +23,8 @@ export class MovieComponent implements OnInit {
   reviews$: Observable<Review[]>;
 
   currentUserId$: Observable<string>;
+
+  statistics$: Observable<MovieStatistics>;
 
   constructor(
     private movieService: MovieService,
@@ -40,6 +42,10 @@ export class MovieComponent implements OnInit {
     this.activatedRoute.params.subscribe(async params => {
       this.movie = await this.movieService.getById(params.id);
       this.reviews$ = this.reviewService.getByMovieId(params.id);
+
+      this.statistics$ = this.reviews$.pipe(
+        switchMap(() => this.movieService.getStatisticsById(params.id))
+      );
     });
   }
 

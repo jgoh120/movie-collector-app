@@ -41,6 +41,10 @@ export class MovieService {
     this.moviesChange.next();
   }
 
+  public getStatisticsById(id: string): Observable<MovieStatistics> {
+    return this.http.get<MovieStatistics>(`${environment.apiUrl}/movies/${id}/stats`);
+  }
+
 }
 
 export type NewMovie = {
@@ -57,3 +61,12 @@ export type Movie = {
   posterUrl: string;
   contributorId: string;
 };
+
+export type MovieStatistics = {
+  movieId: string;
+  rating: {
+    count: number;
+    distribution: number[];
+    average: number;
+  }
+}
