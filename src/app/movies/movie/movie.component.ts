@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Movie, MovieService, MovieStatistics } from 'src/app/movie.service';
+import { Movie, MovieRatingStatistics, MovieService, MovieStatistics } from 'src/app/movie.service';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Review, ReviewService } from 'src/app/review.service';
@@ -24,7 +24,9 @@ export class MovieComponent implements OnInit {
 
   currentUserId$: Observable<string>;
 
-  statistics$: Observable<MovieStatistics>;
+  statistics$: Observable<MovieStatisticsWithRatio>;
+
+  ratingFilter: number = 0;
 
   constructor(
     private movieService: MovieService,
@@ -44,7 +46,18 @@ export class MovieComponent implements OnInit {
       this.reviews$ = this.reviewService.getByMovieId(params.id);
 
       this.statistics$ = this.reviews$.pipe(
-        switchMap(() => this.movieService.getStatisticsById(params.id))
+        switchMap(() => this.movieService.getStatisticsById(params.id)),
+        map(stats => {
+          const reverseDistribution = stats.rating.distribution.reverse();
+          return {
+            ...stats,
+            rating: {
+              ...stats.rating,
+              distribution: reverseDistribution,
+              distributionRatio: reverseDistribution.map(c => c / stats.rating.count)
+            }
+          };
+        })
       );
     });
   }
@@ -85,4 +98,14 @@ export class MovieComponent implements OnInit {
     // }
   }
 
+  setRatingFilter(stars: number) {
+    this.ratingFilter = stars;
+  }
+
 }
+
+type MovieStatisticsWithRatio = MovieStatistics & {
+  rating: MovieRatingStatistics & {
+    distributionRatio: number[];
+  }
+};

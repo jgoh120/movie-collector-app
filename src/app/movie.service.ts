@@ -62,11 +62,13 @@ export type Movie = {
   contributorId: string;
 };
 
+export type MovieRatingStatistics = {
+  count: number;
+  distribution: number[];
+  average: number;
+};
+
 export type MovieStatistics = {
   movieId: string;
-  rating: {
-    count: number;
-    distribution: number[];
-    average: number;
-  }
-}
+  rating: MovieRatingStatistics;
+};
