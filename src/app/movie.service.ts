@@ -57,7 +57,7 @@ export type Movie = {
   id: string;
   title: string;
   genre: string[];
-  rating: number;
+  averageRating: number;
   posterUrl: string;
   contributorId: string;
 };
