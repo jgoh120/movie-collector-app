@@ -7,7 +7,7 @@ import { CommonService } from 'src/app/common.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NewReviewModalComponent } from 'src/app/new-review-modal/new-review-modal.component';
 import { AuthService } from 'src/app/auth.service';
-import { map, switchMap } from 'rxjs/operators';
+import { filter, map, switchMap, tap } from 'rxjs/operators';
 import { EditReviewModalComponent } from 'src/app/edit-review-modal/edit-review-modal.component';
 
 
@@ -47,6 +47,7 @@ export class MovieComponent implements OnInit {
 
       this.statistics$ = this.reviews$.pipe(
         switchMap(() => this.movieService.getStatisticsById(params.id)),
+        filter(stats => stats != null),
         map(stats => {
           const reverseDistribution = stats.rating.distribution.reverse();
           return {
