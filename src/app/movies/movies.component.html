@@ -9,16 +9,17 @@
       <h5 class="card-title" [routerLink]="[movie.id]">{{ movie.title }}</h5>
       <p class="card-text">{{ movie.genre }}</p>
       <ng-container *ngIf="user$ | async as user">
-        <button *ngIf="movie.contributorId == user.id" class="btn btn-primary mr-2" (click)="presentEditMovieModal(movie.id)">
-          Edit this movie
+        <button *ngIf="movie.contributorId == user.id" class="btn btn-primary mr-2 btn-sm" (click)="presentEditMovieModal(movie.id)">
+          Edit
         </button>
-        <button *ngIf="movie.contributorId == user.id" class="btn btn-danger mr-2" (click)="deleteMovie(movie.id)">
-          Delete movie
+        <button *ngIf="movie.contributorId == user.id" class="btn btn-danger mr-2 btn-sm" (click)="deleteMovie(movie.id)">
+          Delete
         </button>
       </ng-container>
     </div>
-    <div class="card-footer">
-      <span class="badge badge-secondary">{{ movie.rating }}</span>
+    <div class="card-footer d-flex justify-content-between">
+      <ngb-rating class="review-rating" [rate]="movie.averageRating" max="5" [readonly]="true"></ngb-rating>
+      <span>{{ movie.averageRating | number : '1.2-2' }}</span>
     </div>
   </div>
 </div>
