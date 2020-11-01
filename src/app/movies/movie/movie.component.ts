@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Movie, MovieRatingStatistics, MovieService, MovieStatistics } from 'src/app/movie.service';
 import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
-import { Review, ReviewService } from 'src/app/review.service';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { ReviewAuthor, ReviewPagination, ReviewService, ReviewsPage } from 'src/app/review.service';
 import { CommonService } from 'src/app/common.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NewReviewModalComponent } from 'src/app/new-review-modal/new-review-modal.component';
 import { AuthService } from 'src/app/auth.service';
-import { filter, map, switchMap, tap } from 'rxjs/operators';
+import { filter, map, share, switchMap, tap } from 'rxjs/operators';
 import { EditReviewModalComponent } from 'src/app/edit-review-modal/edit-review-modal.component';
 
 
@@ -20,13 +20,22 @@ export class MovieComponent implements OnInit {
 
   movie: Movie;
 
-  reviews$: Observable<Review[]>;
+  reviewsPage$: Observable<ReviewsPage>;
+
+  paginationSubject: BehaviorSubject<ReviewPagination> = new BehaviorSubject({
+    sortBy: 'createdAt',
+    direction: 'desc',
+    limit: 2,
+    page: 1,
+    filter: {
+      author: undefined,
+      rating: undefined
+    }
+  });
 
   currentUserId$: Observable<string>;
 
   statistics$: Observable<MovieStatisticsWithRatio>;
-
-  ratingFilter: number = 0;
 
   constructor(
     private movieService: MovieService,
@@ -43,9 +52,12 @@ export class MovieComponent implements OnInit {
 
     this.activatedRoute.params.subscribe(async params => {
       this.movie = await this.movieService.getById(params.id);
-      this.reviews$ = this.reviewService.getByMovieId(params.id);
+      this.reviewsPage$ = this.paginationSubject.asObservable().pipe(
+        switchMap(pagination => this.reviewService.getReviewsPage(params.id, pagination)),
+        share()
+      );
 
-      this.statistics$ = this.reviews$.pipe(
+      this.statistics$ = this.reviewsPage$.pipe(
         switchMap(() => this.movieService.getStatisticsById(params.id)),
         filter(stats => stats != null),
         map(stats => {
@@ -60,6 +72,13 @@ export class MovieComponent implements OnInit {
           };
         })
       );
+    });
+  }
+
+  changePage(page: number) {
+    this.paginationSubject.next({
+      ...this.paginationSubject.value,
+      page
     });
   }
 
@@ -100,7 +119,23 @@ export class MovieComponent implements OnInit {
   }
 
   setRatingFilter(stars: number) {
-    this.ratingFilter = stars;
+    this.paginationSubject.next({
+      ...this.paginationSubject.value,
+      filter: {
+        ...this.paginationSubject.value.filter,
+        rating: stars
+      }
+    });
+  }
+
+  setAuthorFilter(author: ReviewAuthor) {
+    this.paginationSubject.next({
+      ...this.paginationSubject.value,
+      filter: {
+        ...this.paginationSubject.value.filter,
+        author: author
+      }
+    });
   }
 
 }

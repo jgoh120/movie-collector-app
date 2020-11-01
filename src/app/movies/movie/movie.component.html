@@ -22,24 +22,28 @@
         Add Review
       </button>
     </div>
-    <ngb-alert *ngIf="ratingFilter !== 0" type="info" (close)="setRatingFilter(0)">Showing only filters with {{ratingFilter}} star rating</ngb-alert>
-    <ng-container *ngFor="let review of reviews$ | async">
-      <div class="card mb-3" *ngIf="ratingFilter === 0 || review.rating === ratingFilter">
-        <div class="card-body">
-          <ngb-rating class="review-rating float-right" [rate]="review.rating" max="5" [readonly]="true"></ngb-rating>
-          <h5 class="card-title">{{ review.header || '[No Header]' }} </h5>
-          <h6 class="card-subtitle mb-2 text-muted">by {{ review.author?.name || 'anonymous' }}</h6>
-          <p class="card-text">{{ review.description }}</p>
-          <div class="float-right" *ngIf="observables.currentUserId == review.author?.id">
-            <button class="btn btn-outline-primary btn-sm mr-4" (click)="presentEditReviewModal(review.id)">
-              Edit
-            </button>
-            <button class="btn btn-outline-danger btn-sm" (click)="deleteReview(review.id)">
-              Delete
-            </button>
+    <ngb-alert *ngIf="paginationSubject.value.filter.rating != undefined" type="info" (close)="setRatingFilter(undefined)">Showing only reviews with {{paginationSubject.value.filter.rating}} star rating</ngb-alert>
+    <ngb-alert *ngIf="paginationSubject.value.filter.author != undefined" type="info" (close)="setAuthorFilter(undefined)">Showing only reviews by {{paginationSubject.value.filter.author.name}}</ngb-alert>
+    <ng-container *ngIf="reviewsPage$ | async as page">
+      <ngb-pagination [collectionSize]="page.totalCount" [(page)]="page.page" [pageSize]="paginationSubject.value.limit" [rotate]="true" [boundaryLinks]="true" (pageChange)="changePage($event)"></ngb-pagination>
+      <ng-container *ngFor="let review of page.reviews">
+        <div class="card mb-3">
+          <div class="card-body">
+            <ngb-rating class="review-rating float-right" [rate]="review.rating" max="5" [readonly]="true"></ngb-rating>
+            <h5 class="card-title">{{ review.header || '[No Header]' }} </h5>
+            <h6 class="card-subtitle mb-2 text-muted" (click)="setAuthorFilter(review.author)">by {{ review.author?.name || 'anonymous' }}</h6>
+            <p class="card-text">{{ review.description }}</p>
+            <div class="float-right" *ngIf="observables.currentUserId == review.author?.id">
+              <button class="btn btn-outline-primary btn-sm mr-4" (click)="presentEditReviewModal(review.id)">
+                Edit
+              </button>
+              <button class="btn btn-outline-danger btn-sm" (click)="deleteReview(review.id)">
+                Delete
+              </button>
+            </div>
           </div>
         </div>
-      </div>
+      </ng-container>
     </ng-container>
   </div>
 </div>

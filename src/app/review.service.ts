@@ -21,9 +21,25 @@ export class ReviewService {
     this.reviewChange.next();
   }
 
-  getByMovieId(movieId: string): Observable<Review[]> {
+  getReviewsPage(movieId: string, pagination: ReviewPagination): Observable<ReviewsPage> {
+
+    const params = {
+      sortBy: pagination.sortBy,
+      direction: pagination.direction,
+      limit: pagination.limit + '',
+      page: pagination.page + '',
+    };
+
+    if (pagination.filter.author) {
+      params['filterAuthorId'] = pagination.filter.author.id;
+    }
+
+    if (pagination.filter.rating) {
+      params['filterRating'] = pagination.filter.rating + '';
+    }
+
     return this.reviewChange.asObservable().pipe(
-      mergeMap(() => this.http.get<Review[]>(`${environment.apiUrl}/movies/${movieId}/reviews`))
+      mergeMap(() => this.http.get<ReviewsPage>(`${environment.apiUrl}/movies/${movieId}/reviews`, { params }))
     );    
   }
 
@@ -48,10 +64,32 @@ export type NewReview = {
   rating: number;
 };
 
+export type ReviewAuthor = {
+  name: string;
+  id: string;
+};
+
 export type Review = {
   id: string;
   header:string;
   description: string;
   rating: number;
-  authorId: string;
+  author: ReviewAuthor;
 };
+
+export type ReviewsPage = {
+  reviews: Review[];
+  page: number;
+  totalCount: number;
+}
+
+export type ReviewPagination = {
+  sortBy: 'createdAt' | 'rating';
+  direction: 'desc' | 'asc';
+  limit: number;
+  page: number;
+  filter: {
+    rating: number;
+    author: ReviewAuthor;
+  }
+}
