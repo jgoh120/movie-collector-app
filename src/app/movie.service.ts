@@ -15,16 +15,38 @@ export class MovieService {
   ) {
     this.moviesChange = new BehaviorSubject(null);
   }
-
-  public getAll(): Observable<Movie[]> {
-    return this.moviesChange.asObservable().pipe(
-      mergeMap(() => this.http.get<Movie[]>(`${environment.apiUrl}/movies`))
-    );
-  }
+  
 
   public async create(movie: NewMovie): Promise<void> {
     await this.http.post(`${environment.apiUrl}/movies`, movie,  { responseType: 'text' }).toPromise(); 
     this.moviesChange.next();
+  }
+
+
+  public getMoviesPage(pagination: MoviePagination): Observable<MoviesPage> {
+    
+    const params = {
+      sortBy: pagination.sortBy,
+      direction: pagination.direction,
+      limit: pagination.limit + '',
+      page: pagination.page + '',
+    };
+
+    if (pagination.filter.genre) {
+      params['filterGenre'] = pagination.filter.genre.join(",");
+    }
+
+    if (pagination.filter.minRating) {
+      params['filterMinRating'] = pagination.filter.minRating + '';
+    }
+
+    if (pagination.filter.maxRating) {
+      params['filterMaxRating'] = pagination.filter.maxRating + '';
+    }
+
+    return this.moviesChange.asObservable().pipe(
+      mergeMap(() => this.http.get<MoviesPage>(`${environment.apiUrl}/movies`, { params }))
+    );    
   }
 
   public getById(id: string): Promise<Movie> {
@@ -57,7 +79,7 @@ export type Movie = {
   id: string;
   title: string;
   genre: string[];
-  averageRating: number;
+  rating: number;
   posterUrl: string;
   contributorId: string;
 };
@@ -72,3 +94,21 @@ export type MovieStatistics = {
   movieId: string;
   rating: MovieRatingStatistics;
 };
+
+export type MoviesPage = {
+  movies: Movie[];
+  page: number;
+  totalCount: number;
+}
+
+export type MoviePagination = {
+  sortBy: 'createdAt' | 'rating';
+  direction: 'desc' | 'asc';
+  limit: number;
+  page: number;
+  filter: {
+    minRating: number;
+    maxRating: number;
+    genre: string[];
+  }
+}
