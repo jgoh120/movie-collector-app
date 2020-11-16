@@ -23,25 +23,19 @@ export class MovieService {
   }
 
 
-  public getMoviesPage(pagination: MoviePagination): Observable<MoviesPage> {
+  public getMoviesPage(pagination: MoviePagination, filter: MovieFilter): Observable<MoviesPage> {
     
     const params = {
       sortBy: pagination.sortBy,
       direction: pagination.direction,
       limit: pagination.limit + '',
       page: pagination.page + '',
+      filterMinRating: filter.minRating + '',
+      filterMaxRating: filter.maxRating + ''
     };
 
-    if (pagination.filter.genre) {
-      params['filterGenre'] = pagination.filter.genre.join(",");
-    }
-
-    if (pagination.filter.minRating) {
-      params['filterMinRating'] = pagination.filter.minRating + '';
-    }
-
-    if (pagination.filter.maxRating) {
-      params['filterMaxRating'] = pagination.filter.maxRating + '';
+    if (filter.genre.length > 0) {
+      params['filterGenre'] = filter.genre.join(",");
     }
 
     return this.moviesChange.asObservable().pipe(
@@ -101,14 +95,15 @@ export type MoviesPage = {
   totalCount: number;
 }
 
+export type MovieFilter = {
+  minRating: number;
+  maxRating: number;
+  genre: string[];
+}
+
 export type MoviePagination = {
   sortBy: 'createdAt' | 'rating';
   direction: 'desc' | 'asc';
   limit: number;
   page: number;
-  filter: {
-    minRating: number;
-    maxRating: number;
-    genre: string[];
-  }
 }

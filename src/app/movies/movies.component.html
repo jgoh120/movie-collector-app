@@ -1,6 +1,6 @@
-<button *ngIf="user$ | async" class="btn btn-info mt-3" (click)="presentCreateMovieModal()">
+<!-- <button *ngIf="user$ | async" class="btn btn-info mt-3" (click)="presentCreateMovieModal()">
   Add Movie
-</button>
+</button> -->
 
 <!-- <ngb-alert *ngIf="paginationSubject.value.filter.averageRating != undefined" type="info"
   (close)="setAverageRatingFilter(undefined)">Showing only movies with {{paginationSubject.value.filter.rating}} star
@@ -9,11 +9,34 @@
   Showing only movies with {{paginationSubject.value.filter.author.name}} genres</ngb-alert> -->
 
 <ng-container *ngIf="moviesPage$ | async as page">
-  <ngb-pagination [collectionSize]="page.totalCount" [(page)]="page.page" [pageSize]="paginationSubject.value.limit"
-    [rotate]="true" [boundaryLinks]="true" (pageChange)="changePage($event)"></ngb-pagination>
+
+  <form [formGroup]="filterForm" class="row">
+    <div class="col">
+      <ng-select
+        [items]="genres"
+        placeholder="Filter by genre..."
+        [multiple]="true"
+        clearAllText="Clear"
+        formControlName="genre">
+      </ng-select>
+    </div>
+    <div class="col">
+      <ngx-slider [options]="filterSliderOptions" formControlName="rating"></ngx-slider>
+    </div>
+    <div class="col">
+      <ngb-pagination
+        [collectionSize]="page.totalCount"
+        [(page)]="page.page"
+        [pageSize]="paginationSubject.value.limit"
+        [rotate]="true"
+        [boundaryLinks]="true"
+        (pageChange)="changePage($event)">
+      </ngb-pagination>
+    </div>
+  </form>  
 
   <div class="d-flex flex-wrap p-4">
-    <div class="card mb-4 mx-2" style="width: 14rem;" *ngFor="let movie of page.movies">
+    <div class="card mb-4 mx-2" style="width: 20%;" *ngFor="let movie of page.movies">
       <img [src]="movie.posterUrl" class="card-img-top" />
       <div class="card-body">
         <h5 class="card-title" [routerLink]="[movie.id]">{{ movie.title }}</h5>

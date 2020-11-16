@@ -1,13 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { MovieService, MoviePagination, MoviesPage } from '../movie.service';
+import { MovieService, MoviePagination, MoviesPage, MovieFilter } from '../movie.service';
 import { CommonService } from 'src/app/common.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NewMovieModalComponent } from '../new-movie-modal/new-movie-modal.component';
 import { EditMovieDetailComponent } from '../edit-movie-detail/edit-movie-detail.component';
 import { AuthService } from '../auth.service';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { share, switchMap } from 'rxjs/operators';
+import { BehaviorSubject, Observable, combineLatest } from 'rxjs';
+import { share, switchMap, map, startWith } from 'rxjs/operators';
 import { User } from '../user.service';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { Options } from '@angular-slider/ngx-slider';
 
 @Component({
   selector: 'abc-movies',
@@ -21,14 +23,18 @@ export class MoviesComponent implements OnInit {
   paginationSubject: BehaviorSubject<MoviePagination> = new BehaviorSubject({
     sortBy: 'createdAt',
     direction: 'desc',
-    limit: 2,
-    page: 1,
-    filter: {
-      genre: undefined,
-      minRating: undefined,
-      maxRating: undefined
-    }
+    limit: 5,
+    page: 1
   });
+
+  filterForm: FormGroup;
+  filterSliderOptions: Options = {
+    floor: 1,
+    ceil: 5,
+    step: 1
+  };
+
+  genres = ['Action', 'Drama', 'Comedy', 'Romance', 'Horror'];
 
   user$: Observable<User>;
 
@@ -37,13 +43,28 @@ export class MoviesComponent implements OnInit {
     private movieService: MovieService,
     private modalService: NgbModal,
     private authService: AuthService,
-    private commonService: CommonService
+    private commonService: CommonService,
+    private formBuilder: FormBuilder
   ) {
 
+    this.filterForm = this.formBuilder.group({
+      rating: new FormControl([1, 5]),
+      genre: [[]]
+    });
+
     this.user$ = this.authService.currentUser$;
+
+    const filter: Observable<MovieFilter> = this.filterForm.valueChanges.pipe(
+      startWith(this.filterForm.value),
+      map(formValue => ({
+        genre: formValue.genre,
+        minRating: formValue.rating[0],
+        maxRating: formValue.rating[1]
+      }))
+    )
     
-    this.moviesPage$ = this.paginationSubject.asObservable().pipe(
-      switchMap(pagination => this.movieService.getMoviesPage(pagination)),
+    this.moviesPage$ = combineLatest([this.paginationSubject.asObservable(), filter]).pipe(
+      switchMap(obs => this.movieService.getMoviesPage(obs[0], obs[1])),
       share()
     );
   }
@@ -83,15 +104,5 @@ export class MoviesComponent implements OnInit {
         handler: ()=> {}
        }
     })
-  }
-  
-  setGenreFilter(genre: string[]) {
-    this.paginationSubject.next({
-      ...this.paginationSubject.value,
-      filter: {
-        ...this.paginationSubject.value.filter,
-        genre: genre
-      }
-    });
   }
 }

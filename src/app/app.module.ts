@@ -18,6 +18,9 @@ import { MovieComponent } from './movies/movie/movie.component';
 import { NewReviewModalComponent } from './new-review-modal/new-review-modal.component';
 import { EditReviewModalComponent } from './edit-review-modal/edit-review-modal.component';
 import { ConfirmPromptModalComponent } from './confirm-prompt-modal/confirm-prompt-modal.component';
+import { NgxSliderModule } from '@angular-slider/ngx-slider';
+import { NgSelectModule } from '@ng-select/ng-select';
+import { FormsModule } from '@angular/forms';
 
 export const httpInterceptorProviders = [
   { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
@@ -44,7 +47,10 @@ export const httpInterceptorProviders = [
     AppRoutingModule,
     HttpClientModule,
     ReactiveFormsModule,
-    NgbModule
+    NgbModule,
+    NgxSliderModule,
+    FormsModule,
+    NgSelectModule
   ],
   providers: [
     httpInterceptorProviders
