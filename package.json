@@ -26,6 +26,7 @@
     "@types/lodash-es": "^4.17.3",
     "bootstrap": "^4.5.0",
     "lodash-es": "^4.17.15",
+    "ng-zorro-antd": "^10.1.2",
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0",
     "zone.js": "~0.10.3"

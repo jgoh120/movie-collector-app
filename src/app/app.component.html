@@ -1,7 +1,62 @@
- <!--The content below is only a placeholder and can be replaced.-->
+<nz-layout class="app-layout">
+  <nz-sider class="menu-sidebar"
+            nzCollapsible
+            nzWidth="256px"
+            nzBreakpoint="md"
+            [(nzCollapsed)]="isCollapsed"
+            [nzTrigger]="null">
+    <div class="sidebar-logo">
+      <a routerLink="/home">
+        <i style="font-size: 16px; color: #ffffff;">MC</i>
+        <h1>Movie Collector</h1>
+      </a>
+    </div>
+    <ul nz-menu nzTheme="dark" nzMode="inline" [nzInlineCollapsed]="isCollapsed">
+      <li nz-submenu nzOpen nzTitle="Movies" nzIcon="database">
+        <ul>
+          <li nz-menu-item nzMatchRouter>
+            <a routerLink="/movies">Now Showing</a>
+          </li>
+          <li nz-menu-item nzMatchRouter>
+            <a>All Movies</a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nz-sider>
+  <nz-layout>
+    <nz-header>
+      <div class="app-header">
+        <span class="header-trigger" (click)="isCollapsed = !isCollapsed">
+          <i class="trigger" nz-icon [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"></i>
+        </span>
+        <span class="app-header-user" *ngIf="isLoggedIn$ | async; else loggedOut">
+          <nz-avatar nzSize="small" nzIcon="user"></nz-avatar>
+          <a nz-dropdown [nzDropdownMenu]="menu">
+            User
+            <i nz-icon nzType="down"></i>
+          </a>
+        </span>
+      </div>
+    </nz-header>
+    <nz-content>
+      <div class="inner-content">
+        <router-outlet></router-outlet>
+      </div>
+    </nz-content>
+  </nz-layout>
+</nz-layout>
 
- <div class="container">
-   
-    <abc-navigation></abc-navigation>
-  <router-outlet></router-outlet>
-  </div>
+<nz-dropdown-menu #menu="nzDropdownMenu">
+  <ul nz-menu nzSelectable>
+    <li nz-menu-item>Edit Profile</li>
+    <li nz-menu-item nzDanger (click)="signOut()">Logout</li>
+  </ul>
+</nz-dropdown-menu>
+
+<ng-template #loggedOut>
+  <span class="app-header-buttons">
+    <button nz-button nzType="text" routerLink="/login">Sign in</button>
+    <button nz-button nzType="text" routerLink="/signup">Sign up</button>
+  </span>
+</ng-template>

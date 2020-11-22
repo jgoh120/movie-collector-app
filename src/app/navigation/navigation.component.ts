@@ -14,13 +14,10 @@ export class NavigationComponent implements OnInit {
 
   constructor(private authService: AuthService) {
     this.isLoggedIn$ = this.authService.currentUser$.pipe(map(user => user !== null))
-   }
-
-  
+  }
 
   ngOnInit() {
     
-   
   }
 
   signOut() {

@@ -1,14 +1,23 @@
 import { Component } from '@angular/core';
+import { Observable } from 'rxjs';
+import { AuthService } from './auth.service';
+import { map } from 'rxjs/operators';
 
 @Component({
-  selector: 'abc-root',
-  // template: `
-   
-  // `,
-  templateUrl:'app.component.html',
-  styleUrls: ['app.component.scss']
- 
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'movies';
+
+  isCollapsed = false;
+  isLoggedIn$: Observable<boolean>;
+
+  constructor(private authService: AuthService) {
+    this.isLoggedIn$ = this.authService.currentUser$.pipe(map(user => user !== null));
+  }
+
+  signOut() {
+    this.authService.logout();
+  }
 }

@@ -21,6 +21,19 @@ import { ConfirmPromptModalComponent } from './confirm-prompt-modal/confirm-prom
 import { NgxSliderModule } from '@angular-slider/ngx-slider';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { FormsModule } from '@angular/forms';
+import { IconsProviderModule } from './icons-provider.module';
+import { NzLayoutModule } from 'ng-zorro-antd/layout';
+import { NzMenuModule } from 'ng-zorro-antd/menu';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NZ_I18N } from 'ng-zorro-antd/i18n';
+import { en_US } from 'ng-zorro-antd/i18n';
+import { registerLocaleData } from '@angular/common';
+import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
+import { NzAvatarModule } from 'ng-zorro-antd/avatar';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import en from '@angular/common/locales/en';
+
+registerLocaleData(en);
 
 export const httpInterceptorProviders = [
   { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
@@ -50,10 +63,18 @@ export const httpInterceptorProviders = [
     NgbModule,
     NgxSliderModule,
     FormsModule,
-    NgSelectModule
+    NgSelectModule,
+    IconsProviderModule,
+    NzLayoutModule,
+    NzMenuModule,
+    BrowserAnimationsModule,
+    NzAvatarModule,
+    NzDropDownModule,
+    NzButtonModule
   ],
   providers: [
-    httpInterceptorProviders
+    httpInterceptorProviders,
+    { provide: NZ_I18N, useValue: en_US }
   ],
   bootstrap: [AppComponent]
 })
