@@ -1,0 +1,21 @@
+:host {
+  height: 100%;
+  display: flex;
+}
+
+.login-card {
+  width: 620px;
+  margin: auto;
+}
+
+.login-form-margin {
+  margin-bottom: 16px;
+}
+
+.login-form-forgot {
+  float: right;
+}
+
+.login-form-button {
+  width: 100%;
+}

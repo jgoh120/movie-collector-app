@@ -1,7 +1,5 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { LoginComponent } from './login/login.component';
-import { SignupComponent } from './signup/signup.component';
 
 const routes: Routes = [
   // {
@@ -30,13 +28,16 @@ const routes: Routes = [
   // },
   {
     path: 'login',
-    component: LoginComponent
+    loadChildren: () => import('./pages/login/login.module').then(m => m.LoginModule)
   },
   {
     path: 'signup',
-    component: SignupComponent
+    loadChildren: () => import('./pages/signup/signup.module').then(m => m.SignupModule)
   },
-  { path: 'home', loadChildren: () => import('./pages/home/home.module').then(m => m.HomeModule) },
+  {
+    path: 'home',
+    loadChildren: () => import('./pages/home/home.module').then(m => m.HomeModule)
+  },
   { path:'**', redirectTo:'/home' },
   { path: '', pathMatch: 'full', redirectTo: '/home' }
 ];
